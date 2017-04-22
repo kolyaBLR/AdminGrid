@@ -1,7 +1,3 @@
-function funcBeforce() {
-    $("#entities-grid").text("ожидание данных...");
-}
-
 function tag(tag) {
     return "<" + tag + ">";
 }
@@ -10,8 +6,13 @@ function doubleTag(tag, value) {
     return "<" + tag + ">" + value + "</" + tag + ">";
 }
 
+function funcBeforce() {
+    $("#entities-grid").text("ожидание данных...");
+}
+
 function funcSuccess (data) {
-    var htmlCode = tag("table class='table table-bordered table-hover table-condensed'");
+    var htmlCode = tag("div class='table-responsive'");
+    htmlCode += tag("table class='table table-bordered table-hover table-condensed'");
     htmlCode += tag("thead");
     htmlCode += tag("tr");
     htmlCode += doubleTag("th", "id");
@@ -33,22 +34,21 @@ function funcSuccess (data) {
     }
     htmlCode += tag("/tbody");
     htmlCode += tag("/table");
+    htmlCode += tag("/div");
     $("#entities-grid").html(htmlCode);
 }
 
-$(document).ready(function () {
-    $("#load").bind("click", function() {
-        $.ajax ({
-            url: "content.php",
-            type: "GET",
-            data: ({
-                page: 5,
-                filterbyfield: "title",
-                pattern: "smartphone"
-            }),
-            dataType: "json",
-            beforeSend: funcBeforce,
-            success: funcSuccess
-        });
+function showUsers() {
+    $.ajax ({
+        url: "content.php",
+        type: "GET",
+        data: ({
+            page: 5,
+            filterbyfield: "title",
+            pattern: "smartphone"
+        }),
+        dataType: "json",
+        beforeSend: funcBeforce,
+        success: funcSuccess
     });
-});
+}
