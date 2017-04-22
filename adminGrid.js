@@ -7,14 +7,22 @@ function doubleTag(tag, value) {
 }
 
 function funcBeforce() {
-    $("#entities-grid").text("ожидание данных...");
+    $("#entities-grid").text("Ожидание данных...");
 }
 
 function funcSuccess (data) {
-    var htmlCode = tag("div class='table-responsive'");
+    var htmlCode = "";
+    htmlCode += tag("table") + tag("tr");
+    htmlCode += tag("td") + doubleTag("label style='font-size:120%'", "id:") + tag("/td");
+    htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
+    htmlCode += tag("td") + doubleTag("label style='font-size:120%'", "email:") + tag("/td");
+    htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
+    htmlCode += tag("td") + doubleTag("button class='btn' style='height: 90%'", "Поиск") + tag("/td");
+    htmlCode += tag("/tr") + tag("/table");
+
+    htmlCode += tag("div class='table-responsive'");
     htmlCode += tag("table class='table table-bordered table-hover table-condensed'");
-    htmlCode += tag("thead");
-    htmlCode += tag("tr");
+    htmlCode += tag("thead") + tag("tr");
     htmlCode += doubleTag("th", "id");
     htmlCode += doubleTag("th", "last name");
     htmlCode += doubleTag("th", "first name");
@@ -22,9 +30,7 @@ function funcSuccess (data) {
     htmlCode += doubleTag("th", "password");
     htmlCode += doubleTag("th", "role");
     htmlCode += doubleTag("th", "subscription");
-    htmlCode += tag("/tr");
-    htmlCode += tag("/thead");
-    htmlCode += tag("tbody");
+    htmlCode += tag("/tr") + tag("/thead") + tag("tbody");
     for (var i = 0; i < data.length; i++) {
         htmlCode += tag("tr");
         for (var j = 0; j < data[i].length; j++) {
@@ -32,9 +38,7 @@ function funcSuccess (data) {
         }
         htmlCode += tag("/tr");
     }
-    htmlCode += tag("/tbody");
-    htmlCode += tag("/table");
-    htmlCode += tag("/div");
+    htmlCode += tag("/tbody") + tag("/table") + tag("/div");
     $("#entities-grid").html(htmlCode);
 }
 
@@ -43,9 +47,7 @@ function showUsers() {
         url: "content.php",
         type: "GET",
         data: ({
-            page: 5,
-            filterbyfield: "title",
-            pattern: "smartphone"
+
         }),
         dataType: "json",
         beforeSend: funcBeforce,

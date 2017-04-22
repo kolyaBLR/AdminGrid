@@ -5,10 +5,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="adminGrid.js"></script>
+    <script>
+        $("#entities-grid").ajaxgrid({
+            dataUrl: "http://mylocalserver/ajax/products", // URL, с которого тянуть данные
+            sortableColumns: ["id", "title", "created_date"], // массив с именами полей сущности, по которым должна быть возможна сортировка
+            filterableColumns: ["id", "title"], // массив с именами полей сущности, по которым должна быть возможна фильтрация
+            rowsPerPage: 20 // количество строк на страницу для пагинации
+        });
     </script>
-    <script type="text/javascript" src="adminGrid.js"></script>
 </head>
 <body>
     <button class="btn" onclick="showUsers()">Нажми на меня!</button>
