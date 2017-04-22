@@ -6,20 +6,21 @@ function doubleTag(tag, value) {
     return "<" + tag + ">" + value + "</" + tag + ">";
 }
 
-function funcBeforce() {
-    $("#entities-grid").text("Ожидание данных...");
-}
-
-function funcSuccess (data) {
+function showFilter(filter) {
     var htmlCode = "";
     htmlCode += tag("table") + tag("tr");
-    htmlCode += tag("td") + doubleTag("label style='font-size:120%'", "id:") + tag("/td");
-    htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
-    htmlCode += tag("td") + doubleTag("label style='font-size:120%'", "email:") + tag("/td");
-    htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
+    for (var i = 0; i < filter.length; i++) {
+        htmlCode += tag("td") + doubleTag("label style='font-size:120%'", filter[i]) + tag("/td");
+        htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
+    }
+
     htmlCode += tag("td") + doubleTag("button class='btn' style='height: 90%'", "Поиск") + tag("/td");
     htmlCode += tag("/tr") + tag("/table");
+    $("#entities-grid").append(htmlCode);
+}
 
+function showGrid(data) {
+    var htmlCode = "";
     htmlCode += tag("div class='table-responsive'");
     htmlCode += tag("table class='table table-bordered table-hover table-condensed'");
     htmlCode += tag("thead") + tag("tr");
@@ -39,21 +40,43 @@ function funcSuccess (data) {
         htmlCode += tag("/tr");
     }
     htmlCode += tag("/tbody") + tag("/table") + tag("/div");
-    $("#entities-grid").html(htmlCode);
+    $("#entities-grid").append(htmlCode);
 }
 
-function showUsers(dataUrl, sortableColumns, filterableColumns, rowsPerPage) {
+function showPagination(count) {
+    var htmlCode = "";
+    htmlCode += tag("ul class='pagination'");
+    for (var i = 0; i < count; i++) {
+        htmlCode += tag("li");
+        htmlCode += doubleTag("a href='#'", i);
+        htmlCode += tag("/li");
+    }
+    htmlCode += tag("/ul");
+    $("#entities-grid").append(htmlCode);
+}
+
+function queryUsersAjax(url) {
     $.ajax ({
-        url: dataUrl,
+        url: url,
         type: "GET",
         data: ({
-            dataUrl: dataUrl,
-            sortableColumns: sortableColumns,
-            filterableColumns: filterableColumns,
-            rowsPerPage: rowsPerPage
         }),
         dataType: "json",
-        beforeSend: funcBeforce,
-        success: funcSuccess
+        success: showGrid
     });
+}
+
+function queryCountPageAjax(url) {
+    $.ajax ({
+        url: url,
+        type: "POST",
+        dataType: "text",
+        success: showPagination
+    });
+}
+
+function open(dataUrl, countPageUrl, sortableColumns, filterableColumns, rowsPerPage) {
+    showFilter(filterableColumns);
+    queryUsersAjax(dataUrl, rowsPerPage);
+    queryCountPageAjax(countPageUrl);
 }
