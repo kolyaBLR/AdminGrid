@@ -42,12 +42,15 @@ function funcSuccess (data) {
     $("#entities-grid").html(htmlCode);
 }
 
-function showUsers() {
+function showUsers(dataUrl, sortableColumns, filterableColumns, rowsPerPage) {
     $.ajax ({
-        url: "content.php",
+        url: dataUrl,
         type: "GET",
         data: ({
-
+            dataUrl: dataUrl,
+            sortableColumns: sortableColumns,
+            filterableColumns: filterableColumns,
+            rowsPerPage: rowsPerPage
         }),
         dataType: "json",
         beforeSend: funcBeforce,

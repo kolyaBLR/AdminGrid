@@ -8,4 +8,5 @@
     $THN = array($m, $s, $t, $k, $n, $x);
     $THN = json_encode($THN);
     echo $THN;
+    //echo $_GET['rowsPerPage'];
 ?>
