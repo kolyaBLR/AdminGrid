@@ -1,3 +1,3 @@
 <?php
-    echo 123;
+    echo 213 / $_POST['rowsPerPage'];
 ?>

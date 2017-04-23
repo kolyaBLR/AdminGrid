@@ -8,7 +8,7 @@ function doubleTag(tag, value) {
 
 function showFilter(filter) {
     var htmlCode = "";
-    htmlCode += tag("table") + tag("tr");
+    htmlCode += tag("table class='table'") + tag("tr");
     for (var i = 0; i < filter.length; i++) {
         htmlCode += tag("td") + doubleTag("label style='font-size:120%'", filter[i]) + tag("/td");
         htmlCode += tag("td") + doubleTag("input type='text'", "") + tag("/td");
@@ -16,10 +16,10 @@ function showFilter(filter) {
 
     htmlCode += tag("td") + doubleTag("button class='btn' style='height: 90%'", "Поиск") + tag("/td");
     htmlCode += tag("/tr") + tag("/table");
-    $("#entities-grid").append(htmlCode);
+    $("#filter").append(htmlCode);
 }
 
-function showGrid(data) {
+function showUsers(data) {
     var htmlCode = "";
     htmlCode += tag("div class='table-responsive'");
     htmlCode += tag("table class='table table-bordered table-hover table-condensed'");
@@ -40,7 +40,7 @@ function showGrid(data) {
         htmlCode += tag("/tr");
     }
     htmlCode += tag("/tbody") + tag("/table") + tag("/div");
-    $("#entities-grid").append(htmlCode);
+    $("#grid").append(htmlCode);
 }
 
 function showPagination(count) {
@@ -48,10 +48,18 @@ function showPagination(count) {
     htmlCode += tag("ul class='pagination'");
     for (var i = 0; i < count; i++) {
         htmlCode += tag("li");
-        htmlCode += doubleTag("a href='#'", i);
+        htmlCode += doubleTag("a href='#'", i + 1);
         htmlCode += tag("/li");
     }
     htmlCode += tag("/ul");
+    $("#pagination").append(htmlCode);
+}
+
+function showDiv() {
+    var htmlCode = "";
+    htmlCode += doubleTag("div id='filter'", '')
+    htmlCode += doubleTag("div id='grid'", '')
+    htmlCode += doubleTag("div id='pagination'", '')
     $("#entities-grid").append(htmlCode);
 }
 
@@ -62,21 +70,25 @@ function queryUsersAjax(url) {
         data: ({
         }),
         dataType: "json",
-        success: showGrid
+        success: showUsers
     });
 }
 
-function queryCountPageAjax(url) {
+function queryCountPageAjax(url, count) {
     $.ajax ({
         url: url,
         type: "POST",
+        data: ({
+            rowsPerPage : count
+        }),
         dataType: "text",
         success: showPagination
     });
 }
 
 function open(dataUrl, countPageUrl, sortableColumns, filterableColumns, rowsPerPage) {
+    showDiv();
     showFilter(filterableColumns);
-    queryUsersAjax(dataUrl, rowsPerPage);
-    queryCountPageAjax(countPageUrl);
+    queryUsersAjax(dataUrl);
+    queryCountPageAjax(countPageUrl, rowsPerPage);
 }
